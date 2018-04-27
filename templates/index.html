@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+    <link rel="stylesheet" href="/templates/css/style.css">
+</head>
+<body>
+    <div class="ui sticky menu">
+        <div class="header item">
+            FakeTrello
+        </div>    
+        <div class="right menu" >
+            <div class="item">
+                <a href="{{ user_logout }}" class="item">Logout</a>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="ui grid container" style="padding-top: 30px;">
+        <button class="ui blue button" data-modal="modal1" id="new">Nueva Tarea</button>
+
+        <div class="three column row">
+
+            <div class="column">
+                <div class="auto-center-row" style="justify-content: space-between">
+                    <h1>TAREAS</h1> 
+                </div>
+                <div id="listToDo" class="ui segment auto-center-col">
+                    {% for task in tasksToDo %}
+                        <div class="ui card" id="{{ task.key }}">
+                        <div class="content auto-center-row" style="justify-content: space-between">
+                            <div class="header" id="title-task">{{ task.title }}</div>
+                            <div class="ui compact menu" style="border: none; box-shadow: none;">
+                                <div class="ui simple dropdown item">
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <button class="ui button" data-modal="modal5" data-key="{{ task.key }}">
+                                            <i class="icon settings"></i>
+                                        </button>
+                                        <button class="ui button" data-modal="modal2" data-key="{{ task.key }}">
+                                            <i class="trash alternate outline icon"></i>
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                          
+                          <div class="ui small feed">
+                            <div class="event">
+                              <div class="content">
+                                <div class="summary" id="description-task">
+                                   {{ task.description }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="extra content auto-center-row" style="justify-content: space-between">
+                            <div>
+                                <button class="ui disabled icon button" >
+                                    <i class="arrow alternate circle left icon"></i>
+                                </button>
+                                <button class="ui icon button" data-status="toDoing" data-key="{{ task.key }}">
+                                    <i class="arrow alternate circle right icon"></i>
+                                </button>
+                            </div>
+                            <div> 
+                            </div>
+                        </div>
+                        
+                      </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="column">
+                <div class="auto-center-row" style="justify-content: space-between">
+                    <h1>EN EJECUCION</h1>
+                </div>
+                <div id="listDoing" class="ui segment auto-center-col">
+                    {% for task in tasksDoing %}
+                        <div class="ui card" id="{{ task.key }}">
+                        <div class="content auto-center-row" style="justify-content: space-between">
+                            <div class="header" id="title-task">{{ task.title }}</div>
+                            <div class="ui compact menu" style="border: none; box-shadow: none;">
+                                <div class="ui simple dropdown item">
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <button class="ui button" data-modal="modal5" data-key="{{ task.key }}">
+                                            <i class="icon settings"></i>
+                                        </button>
+                                        <button class="ui button" data-modal="modal2" data-key="{{ task.key }}">
+                                            <i class="trash alternate outline icon"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content">
+
+                          <div class="ui small feed">
+                            <div class="event">
+                              <div class="content">
+                                <div class="summary" id="description-task">
+                                   {{ task.description }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="extra content auto-center-row" style="justify-content: space-between">
+                            <div>
+                                <button class="ui icon button toToDo" data-status="toToDo" data-key="{{ task.key }}">
+                                    <i class="arrow alternate circle left icon"></i>
+                                </button>
+                                <button class="ui icon button toDone" data-status="toDone" data-key="{{ task.key }}">
+                                    <i class="arrow alternate circle right icon"></i>
+                                </button>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+
+                      </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="column">
+                <div class="auto-center-row" style="justify-content: space-between">
+                    <h1>REALIZADAS</h1>
+                </div>
+                <div id="listDone" class="ui segment auto-center-col">
+                    {% for task in tasksDone %}
+                        <div class="ui card" id="{{ task.key }}">
+                        <div class="content auto-center-row" style="justify-content: space-between">
+                            <div class="header" id="title-task">{{ task.title }}</div>
+                            <div class="ui compact menu" style="border: none; box-shadow: none;">
+                                <div class="ui simple dropdown item">
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <button class="ui button" data-modal="modal5" data-key="{{ task.key }}">
+                                            <i class="icon settings"></i>
+                                        </button>
+                                        <button class="ui button" data-modal="modal2" data-key="{{ task.key }}">
+                                            <i class="trash alternate outline icon"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content">
+
+                          <div class="ui small feed">
+                            <div class="event">
+                              <div class="content">
+                                <div class="summary" id="description-task">
+                                   {{ task.description }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="extra content auto-center-row" style="justify-content: space-between">
+                            <div>
+                                <button class="ui icon button toDoingfromDone" data-status="toDoingfromDone" data-key="{{ task.key }}" >
+                                    <i class="arrow alternate circle left icon"></i>
+                                </button>
+                                <button class="ui disabled icon button">
+                                    <i class="arrow alternate circle right icon"></i>
+                                </button>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+
+                      </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="ui mini modal" id="modal5">
+        <i class="close icon"></i>
+        <div class="header">
+            Modificar Tarea
+        </div>
+
+            <div class="auto-center-col image content" style="flex-direction: column">
+                <form class="ui form" id="modFormTask">
+                    <input type="hidden" name="method" value="mod"/>
+                    <input type="hidden" name="key" value=""/>
+                    <input type="hidden" name="status" value=""/>
+                    <div class="field">
+                        <label>Titulo</label>
+                        <input type="text" name="title"/>
+                    </div>
+                    <div class="field">
+                        <label>Descripcion</label>
+                        <textarea type="text" name="description"></textarea>
+                    </div>
+                    <button type="submit">asdasd</button>
+                </form>
+            </div>
+            <div class="actions">
+                <div class="ui positive right labeled icon button">
+                Yep, that's me
+                <i class="checkmark icon"></i>
+                </div>
+            </div>
+
+    </div>
+    <div class="ui mini modal" id="modal1">
+        <i class="close icon"></i>
+        <div class="header">
+            Nueva Tarea
+        </div>
+
+        <div class="auto-center-col image content" style="flex-direction: column">
+            <form class="ui form" id="addFormTask">
+                <input type="hidden" name="method" value="add"/>
+                <div class="field">
+                    <label>Titulo</label>
+                    <input type="text" name="title" id="title"/>
+                </div>
+                <div class="field">
+                    <label>Descripcion</label>
+                    <textarea type="text" name="description" id="description"></textarea>
+                </div>
+                <button type="submit">asdasd</button>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui positive right labeled icon button">
+            Yep, that's me
+            <i class="checkmark icon"></i>
+            </div>
+        </div>
+
+    </div>
+    <div class="ui basic modal" id="modal2">
+        <div class="ui icon header">
+            <i class="archive icon"></i>
+            Eliminar Tarea
+        </div>
+        <div class="content" style="text-align: center">
+            <p>¿Deseas borrar esta tarea?</p>
+        </div>
+        <form id="delFormTask" class="actions" style="width: fit-content; margin: auto">
+            <input type="hidden" value="" name="delid" id="delid"/>
+            <input type="hidden" value="del" id="method" name="method"/>
+            <button type="button" value="no" id="cancelDel" class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                No
+            </button>
+            <button type="submit" value="yes" class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+                Si
+            </button>
+        </form>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <script src="/templates/js/main.js"></script>
+    <script src="/templates/js/view.js"></script>
+    <script src="/templates/js/ajax.js"></script>
+
+</body>
+</html>
