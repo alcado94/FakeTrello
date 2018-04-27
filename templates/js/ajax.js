@@ -23,7 +23,15 @@ var TaskDAO = (function() {
 			requestByAjax({
 				url: resourcePath,
 				type: 'POST',
-				data: task
+				data: task,
+				dataType: 'json',
+				success: function(response){
+				    task.id=response.key;
+				},
+				error: function(error){
+					 console.log("Error:");
+					 console.log(error);
+				}
 			}, done, fail, always);
 		};
 

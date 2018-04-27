@@ -54,9 +54,9 @@ class MainHandler(webapp2.RequestHandler):
             print(name_info)
             jinja = jinja2.get_jinja2(app=self.app)
 
-            todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo')]
-            doing = [row.to_dict() for row in Task.query(Task.status == 'Doing')]
-            done = [row.to_dict() for row in Task.query(Task.status == 'Done')]
+            todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo' , Task.owner == user_id)]
+            doing = [row.to_dict() for row in Task.query(Task.status == 'Doing' , Task.owner == user_id)]
+            done = [row.to_dict() for row in Task.query(Task.status == 'Done' , Task.owner == user_id)]
 
             data = {
                 "tasksToDo": todo,
@@ -74,11 +74,16 @@ class MainHandler(webapp2.RequestHandler):
 class TaskHandler(webapp2.RequestHandler):
 
     def get(self):
+
+        user = users.get_current_user()
+        user_id = user.user_id()
+        name_info = user.nickname()
+
         jinja = jinja2.get_jinja2(app=self.app)
 
-        todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo')]
-        doing = [row.to_dict() for row in Task.query(Task.status == 'Doing')]
-        done = [row.to_dict() for row in Task.query(Task.status == 'Done')]
+        todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo' & Task.owner == user_id)]
+        doing = [row.to_dict() for row in Task.query(Task.status == 'Doing' & Task.owner == user_id)]
+        done = [row.to_dict() for row in Task.query(Task.status == 'Done' & Task.owner == user_id)]
 
         data = {
             "tasksToDo": todo,
@@ -90,45 +95,54 @@ class TaskHandler(webapp2.RequestHandler):
 
     def post(self):
 
-        method = self.request.get("method")
+        user = users.get_current_user()
+
+        if user:
+            method = self.request.get("method")
+
+            user_id = user.user_id()
+            name_info = user.nickname()
+
+            if method == 'del':
+                id = self.request.get('id')
+
+                entity = ndb.Key(Task, id)
+
+                entity.delete()
+            elif method == 'mod':
+                id = self.request.get('id')
 
 
-        if method == 'del':
-            id = self.request.get('id')
+                entity = ndb.Key(Task, id).get()
 
-            entity = ndb.Key(Task, id)
+                entity.title = self.request.get('title')
+                entity.description = self.request.get('description')
+                entity.status = self.request.get('status')
 
-            entity.delete()
-        elif method == 'mod':
-            id = self.request.get('id')
+                entity.put()
 
+            else:
+                title = self.request.get("title", "")
+                description = self.request.get("description", "")
+                status = "ToDo"
 
-            entity = ndb.Key(Task, id).get()
+                def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+                    return ''.join(random.choice(chars) for _ in range(size))
 
-            entity.title = self.request.get('title')
-            entity.description = self.request.get('description')
-            entity.status = self.request.get('status')
+                key = id_generator()
 
-            entity.put()
+                if len(title) == 0 :
+                    self.response.write("Se requiere un titulo")
+                    return
 
+                tarea = Task(title=title, description=description, status=status, key=key, owner=user_id, id=key)
+
+                tarea.put()
+
+                json_txt = json.dumps(tarea.to_dict())
+                self.response.out.write(json_txt)
         else:
-            title = self.request.get("title", "")
-            description = self.request.get("description", "")
-            status = "ToDo"
-
-            def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-                return ''.join(random.choice(chars) for _ in range(size))
-
-            key = id_generator()
-
-            if len(title) == 0 :
-                self.response.write("Se requiere un titulo")
-                return
-
-            tarea = Task(title=title, description=description, status=status, key=key, id=key)
-
-            tarea.put()
-
+            self.redirect('/login')
 
 
 

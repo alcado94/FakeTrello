@@ -32,7 +32,7 @@ var TaskView = (function() {
                     },
                     showErrorMessage
                 );
-
+				console.log(self.task);
 
 				return false;
 			});
@@ -57,7 +57,7 @@ var TaskView = (function() {
 
 			$('#modFormTask').submit(function(event) {
                 self.task = self.putTask();
-				console.log(self.task);
+
                 dao.modifyTask(self.task,
                     function (task) {
                         self.reloadTask(self.task);

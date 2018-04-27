@@ -87,17 +87,10 @@ $('#listDone').on('click','[data-status="toDoingfromDone"]',function () {
 
 });
 
-/*
-$('#contenedor-prueba').on('click','.nuevo', function () {
-    $('#contenedor-prueba #pr').remove();
-    $('#contenedor-prueba').append(
-        "<button id=\"pr2\" class='nuevo2' style=\"float: right\">A la Izquierda</button>"
-    )
+$('#newTask').click(function () {
+    $('#addFormTask').submit();
 });
 
-$('#contenedor-prueba').on('click','.nuevo2', function () {
-    $('#contenedor-prueba #pr2').remove();
-    $('#contenedor-prueba').append(
-        "<button id=\"pr\" class='nuevo' style=\"float: left\">A la Derecha</button>"
-    )
-})*/
+$('#modifyTask').click(function () {
+    $('#modFormTask').submit();
+})
