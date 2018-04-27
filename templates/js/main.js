@@ -24,7 +24,7 @@ $(document).ready(function(){
 
 });
 
-$('[data-modal="modal2"]').on('click', function(){
+$('#listToDo').on('click','[data-modal="modal2"]', function(){
     // using the attribute data-modal to identify for what modal the button references
     modal = $(this).attr('data-modal');
     // creating the individual event attached to click over button
@@ -34,7 +34,32 @@ $('[data-modal="modal2"]').on('click', function(){
 
     $('#delid').attr('value',$(this).attr('data-key'));
 });
-$('[data-modal="modal5"]').on('click', function(){
+$('#listToDo').on('click','[data-modal="modal5"]', function(){
+    // using the attribute data-modal to identify for what modal the button references
+    modal = $(this).attr('data-modal');
+
+    id = $('#'+$(this).attr('data-key'));
+    console.log($(this).attr('data-key'));
+    // creating the individual event attached to click over button
+    $('#'+modal+'.modal').modal(
+        'show'
+    );
+    $('#modFormTask').find('input[name="key"]').val($(this).attr('data-key').trim());
+    $('#modFormTask').find('input[name="title"]').val(id.find('#title-task').text().trim());
+    $('#modFormTask').find('textarea[name="description"]').val(id.find('#description-task').text().trim());
+});
+
+$('#listDoing').on('click','[data-modal="modal2"]', function(){
+    // using the attribute data-modal to identify for what modal the button references
+    modal = $(this).attr('data-modal');
+    // creating the individual event attached to click over button
+    $('#'+modal+'.modal').modal(
+        'show'
+    );
+
+    $('#delid').attr('value',$(this).attr('data-key'));
+});
+$('#listDoing').on('click','[data-modal="modal5"]', function(){
     // using the attribute data-modal to identify for what modal the button references
     modal = $(this).attr('data-modal');
 
@@ -48,7 +73,30 @@ $('[data-modal="modal5"]').on('click', function(){
     $('#modFormTask').find('input[name="title"]').val(id.find('#title-task').text().trim());
     $('#modFormTask').find('textarea[name="description"]').val(id.find('#description-task').text().trim());
 });
+$('#listDone').on('click','[data-modal="modal2"]', function(){
+    // using the attribute data-modal to identify for what modal the button references
+    modal = $(this).attr('data-modal');
+    // creating the individual event attached to click over button
+    $('#'+modal+'.modal').modal(
+        'show'
+    );
 
+    $('#delid').attr('value',$(this).attr('data-key'));
+});
+$('#listDone').on('click','[data-modal="modal5"]', function(){
+    // using the attribute data-modal to identify for what modal the button references
+    modal = $(this).attr('data-modal');
+
+    id = $('#'+$(this).attr('data-key'));
+
+    // creating the individual event attached to click over button
+    $('#'+modal+'.modal').modal(
+        'show'
+    );
+    $('#modFormTask').find('input[name="key"]').val($(this).attr('data-key').trim());
+    $('#modFormTask').find('input[name="title"]').val(id.find('#title-task').text().trim());
+    $('#modFormTask').find('textarea[name="description"]').val(id.find('#description-task').text().trim());
+});
 
 
 $('#listToDo').on('click','[data-status="toDoing"]', function () {
