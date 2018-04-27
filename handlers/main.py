@@ -62,7 +62,7 @@ class MainHandler(webapp2.RequestHandler):
                 "tasksToDo": todo,
                 "tasksDoing": doing,
                 "tasksDone": done,
-                "user" : user,
+                "user" : user.nickname(),
                 "user_logout": users.create_logout_url("/")
             }
 

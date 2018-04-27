@@ -139,7 +139,7 @@ var TaskView = (function() {
                 "            <div class=\"ui simple dropdown item\">\n" +
                 "                <i class=\"dropdown icon\"></i>\n" +
                 "                <div class=\"menu\">\n" +
-                "                    <button class=\"ui button\" data-modal=\"modal1\" id=\"new3\">\n" +
+                "                    <button class=\"ui button\" data-modal=\"modal5\" data-key=\"" + task.id + "\" id=\"new3\">\n" +
                 "                        <i class=\"icon settings\"></i>\n" +
                 "                    </button>\n" +
                 "                    <button class=\"ui button\" data-modal=\"modal2\" data-key=\"" + task.id + "\">\n" +
@@ -190,7 +190,7 @@ var TaskView = (function() {
                 "            <div class=\"ui simple dropdown item\">\n" +
                 "                <i class=\"dropdown icon\"></i>\n" +
                 "                <div class=\"menu\">\n" +
-                "                    <button class=\"ui button\" data-modal=\"modal1\" id=\"new3\">\n" +
+                "                    <button class=\"ui button\" data-modal=\"modal5\" data-key=\"" + task.id + "\" id=\"new3\" >\n" +
                 "                        <i class=\"icon settings\"></i>\n" +
                 "                    </button>\n" +
                 "                    <button class=\"ui button\" data-modal=\"modal2\" data-key=\"" + task.id + "\">\n" +
@@ -241,7 +241,7 @@ var TaskView = (function() {
                 "            <div class=\"ui simple dropdown item\">\n" +
                 "                <i class=\"dropdown icon\"></i>\n" +
                 "                <div class=\"menu\">\n" +
-                "                    <button class=\"ui button\" data-modal=\"modal1\" id=\"new3\">\n" +
+                "                    <button class=\"ui button\" data-modal=\"modal5\" data-key=\"" + task.id + "\" id=\"new3\">\n" +
                 "                        <i class=\"icon settings\"></i>\n" +
                 "                    </button>\n" +
                 "                    <button class=\"ui button\" data-modal=\"modal2\" data-key=\"" + task.id + "\">\n" +
