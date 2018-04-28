@@ -39,12 +39,12 @@ $('#listToDo').on('click','[data-modal="modal5"]', function(){
     modal = $(this).attr('data-modal');
 
     id = $('#'+$(this).attr('data-key'));
-    console.log($(this).attr('data-key'));
     // creating the individual event attached to click over button
     $('#'+modal+'.modal').modal(
         'show'
     );
     $('#modFormTask').find('input[name="key"]').val($(this).attr('data-key').trim());
+    $('#modFormTask').find('input[name="status"]').val('ToDo');
     $('#modFormTask').find('input[name="title"]').val(id.find('#title-task').text().trim());
     $('#modFormTask').find('textarea[name="description"]').val(id.find('#description-task').text().trim());
 });
@@ -70,6 +70,7 @@ $('#listDoing').on('click','[data-modal="modal5"]', function(){
         'show'
     );
     $('#modFormTask').find('input[name="key"]').val($(this).attr('data-key').trim());
+    $('#modFormTask').find('input[name="status"]').val('Doing');
     $('#modFormTask').find('input[name="title"]').val(id.find('#title-task').text().trim());
     $('#modFormTask').find('textarea[name="description"]').val(id.find('#description-task').text().trim());
 });
@@ -94,6 +95,7 @@ $('#listDone').on('click','[data-modal="modal5"]', function(){
         'show'
     );
     $('#modFormTask').find('input[name="key"]').val($(this).attr('data-key').trim());
+    $('#modFormTask').find('input[name="status"]').val('Done');
     $('#modFormTask').find('input[name="title"]').val(id.find('#title-task').text().trim());
     $('#modFormTask').find('textarea[name="description"]').val(id.find('#description-task').text().trim());
 });

@@ -93,7 +93,7 @@ var TaskView = (function() {
 				'method' : form.find('input[name="method"]').val(),
 				'title': form.find('input[name="title"]').val(),
 				'description': form.find('textarea[name="description"]').val(),
-				'status': 'ToDo'
+				'status': form.find('input[name="status"]').val()
 			};
 		};
 
