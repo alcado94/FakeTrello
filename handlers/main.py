@@ -50,7 +50,7 @@ class MainHandler(webapp2.RequestHandler):
 
             user_id = user.user_id()
             name_info = user.nickname()
-            
+
             jinja = jinja2.get_jinja2(app=self.app)
 
             todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo' , Task.owner == user_id)]
