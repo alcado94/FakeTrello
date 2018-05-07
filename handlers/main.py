@@ -51,21 +51,22 @@ class MainHandler(webapp2.RequestHandler):
             user_id = user.user_id()
             name_info = user.nickname()
 
+            user = users.get_current_user()
+            user_id = user.user_id()
+            name_info = user.nickname()
+
             jinja = jinja2.get_jinja2(app=self.app)
 
-            todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo' , Task.owner == user_id)]
-            doing = [row.to_dict() for row in Task.query(Task.status == 'Doing' , Task.owner == user_id)]
-            done = [row.to_dict() for row in Task.query(Task.status == 'Done' , Task.owner == user_id)]
+            boards = [row.to_dict() for row in Board.query()]
 
             data = {
-                "tasksToDo": todo,
-                "tasksDoing": doing,
-                "tasksDone": done,
-                "user" : user.nickname(),
+                "boards": boards,
+                "user": user.nickname(),
                 "user_logout": users.create_logout_url("/")
             }
 
-            self.response.write(jinja.render_template("index.html", **data))
+
+            self.response.write(jinja.render_template("menu.html", **data))
         else:
             self.redirect('/login')
 
@@ -74,20 +75,32 @@ class TaskHandler(webapp2.RequestHandler):
 
     def get(self):
 
+        id = self.request.get("id")
+
+
         user = users.get_current_user()
         user_id = user.user_id()
         name_info = user.nickname()
 
         jinja = jinja2.get_jinja2(app=self.app)
 
-        todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo' & Task.owner == user_id)]
-        doing = [row.to_dict() for row in Task.query(Task.status == 'Doing' & Task.owner == user_id)]
-        done = [row.to_dict() for row in Task.query(Task.status == 'Done' & Task.owner == user_id)]
+
+
+        todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo', Task.owner == user_id , Task.board == id)]
+        doing = [row.to_dict() for row in Task.query(Task.status == 'Doing', Task.owner == user_id , Task.board == id)]
+        done = [row.to_dict() for row in Task.query(Task.status == 'Done' , Task.owner == user_id , Task.board == id)]
+
+        print(todo)
+        print(doing)
+        print(done)
 
         data = {
             "tasksToDo": todo,
             "tasksDoing": doing,
-            "tasksDone": done
+            "tasksDone": done,
+            "user": user.nickname(),
+            "user_logout": users.create_logout_url("/"),
+            "boardId" : id
         }
 
         self.response.write(jinja.render_template("index.html", **data))
@@ -123,6 +136,7 @@ class TaskHandler(webapp2.RequestHandler):
             else:
                 title = self.request.get("title", "")
                 description = self.request.get("description", "")
+                board = self.request.get("board", "")
                 status = "ToDo"
 
                 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -134,11 +148,78 @@ class TaskHandler(webapp2.RequestHandler):
                     self.response.write("Se requiere un titulo")
                     return
 
-                tarea = Task(title=title, description=description, status=status, key=key, owner=user_id, id=key)
+                tarea = Task(title=title, description=description, status=status, key=key, owner=user_id, board=board, id=key)
 
                 tarea.put()
 
                 json_txt = json.dumps(tarea.to_dict())
+                self.response.out.write(json_txt)
+        else:
+            self.redirect('/login')
+
+class BoardHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        user = users.get_current_user()
+        user_id = user.user_id()
+        name_info = user.nickname()
+
+        jinja = jinja2.get_jinja2(app=self.app)
+
+        boards = [row.to_dict() for row in Board.query()]
+
+        data = {
+            "boards": boards
+        }
+
+        self.response.write(jinja.render_template("menu.html", **data))
+
+    def post(self):
+
+        user = users.get_current_user()
+
+        if user:
+            method = self.request.get("method")
+
+            user_id = user.user_id()
+            name_info = user.nickname()
+
+            if method == 'del':
+                id = self.request.get('id')
+
+                entity = ndb.Key(Task, id)
+
+                entity.delete()
+            elif method == 'mod':
+                id = self.request.get('id')
+
+
+                entity = ndb.Key(Task, id).get()
+
+                entity.title = self.request.get('title')
+                entity.description = self.request.get('description')
+                entity.status = self.request.get('status')
+
+                entity.put()
+
+            else:
+                title = self.request.get("title", "")
+
+                def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+                    return ''.join(random.choice(chars) for _ in range(size))
+
+                key = id_generator()
+
+                if len(title) == 0 :
+                    self.response.write("Se requiere un titulo")
+                    return
+
+                board = Board(title=title, key=key, owner=user_id, id=key)
+
+                board.put()
+
+                json_txt = json.dumps(board.to_dict())
                 self.response.out.write(json_txt)
         else:
             self.redirect('/login')
@@ -150,10 +231,17 @@ class Task(ndb.Model):
     description = ndb.StringProperty(required = True)
     status = ndb.StringProperty(required = True)
     owner = ndb.StringProperty(required = True)
+    board = ndb.StringProperty(required=True)
+    key = ndb.StringProperty(required = True)
+
+class Board(ndb.Model):
+    title = ndb.StringProperty(required = True)
+    owner = ndb.StringProperty(required = True)
     key = ndb.StringProperty(required = True)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/task/*', TaskHandler),
-    ('/login', LoginHandler)
+    ('/login', LoginHandler),
+    ('/board/*', BoardHandler)
 ], debug=True)

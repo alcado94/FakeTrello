@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FakeTrello</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+    <link rel="stylesheet" href="/templates/css/style.css">
+</head>
+<body>
+    <div class="ui sticky menu">
+        <div class="header item">
+            FakeTrello
+        </div>
+        <div class="right menu" >
+            <div class="item">
+                <h5 class="item">Bienvenido,&nbsp;&nbsp;&nbsp;    <strong>{{ user }}</strong></h5>
+            </div>
+            <div class="item">
+                <a href="{{ user_logout }}" class="item">Logout</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ui grid container" style="padding-top: 30px;">
+        <div class="ui cards" id="listBoards">
+            {% for board in boards %}
+                <a href="/task?id={{ board.key }}" class="card">
+                    <div class="content">
+                        <div class="header">{{ board.title }}</div>
+                        <div class="meta"></div>
+                        <div class="description">
+                            &nbsp;
+
+                            &nbsp;
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+            <form id="addFormBoard" class="card">
+                <div class="content">
+                    <div  class="ui transparent input">
+                        <input type="text" name="title" placeholder="Nuevo tablon...">
+                    </div>
+                </div>
+                <button type="submit" class="ui bottom attached button">
+                    <i class="add icon"></i>
+                    Add
+                </button>
+            </form>
+        </div>
+    </div>
+     <div class="ui mini modal" id="modal5">
+        <i class="close icon"></i>
+        <div class="header">
+            Modificar Tarea
+        </div>
+
+            <div class="auto-center-col image content" style="flex-direction: column">
+                <form class="ui form" id="modFormTask">
+                    <input type="hidden" name="method" value="mod"/>
+                    <input type="hidden" name="key" value=""/>
+                    <input type="hidden" name="status" value=""/>
+                    <div class="field">
+                        <label>Titulo</label>
+                        <input type="text" name="title"/>
+                    </div>
+                    <div class="field">
+                        <label>Descripcion</label>
+                        <textarea type="text" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <button id="modifyTask" class="ui positive right labeled icon button">
+                Modificar
+                <i class="checkmark icon"></i>
+                </button>
+            </div>
+
+    </div>
+
+    <div class="ui basic modal" id="modal2">
+        <div class="ui icon header">
+            <i class="archive icon"></i>
+            Eliminar Tarea
+        </div>
+        <div class="content" style="text-align: center">
+            <p>¿Deseas borrar esta tarea?</p>
+        </div>
+        <form id="delFormTask" class="actions" style="width: fit-content; margin: auto">
+            <input type="hidden" value="" name="delid" id="delid"/>
+            <input type="hidden" value="del" id="method" name="method"/>
+            <button type="button" value="no" id="cancelDel" class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                No
+            </button>
+            <button type="submit" value="yes" class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+                Si
+            </button>
+        </form>board
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <script src="/templates/js/mainBoard.js"></script>
+    <script src="/templates/js/viewBoard.js"></script>
+    <script src="/templates/js/ajaxBoard.js"></script>
+
+</body>
+</html>

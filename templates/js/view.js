@@ -79,9 +79,12 @@ var TaskView = (function() {
 			var form = $('#addFormTask');
 
 			return {
+
 				'method' : form.find('input[name="method"]').val(),
 				'title': form.find('input[name="title"]').val(),
-				'description': form.find('textarea[name="description"]').val()
+				'description': form.find('textarea[name="description"]').val(),
+				'board': $("#boardId").val()
+
 			};
 		};
 
