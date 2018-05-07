@@ -57,7 +57,7 @@ class MainHandler(webapp2.RequestHandler):
 
             jinja = jinja2.get_jinja2(app=self.app)
 
-            boards = [row.to_dict() for row in Board.query()]
+            boards = [row.to_dict() for row in Board.query(Task.owner == user_id)]
 
             data = {
                 "boards": boards,
