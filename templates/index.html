@@ -10,9 +10,9 @@
 </head>
 <body>
     <div class="ui sticky menu">
-        <div class="header item">
+        <a href="/" class="header item">
             FakeTrello
-        </div>    
+        </a>
         <div class="right menu" >
             <div class="item">
                 <h5 class="item">Bienvenido,&nbsp;&nbsp;&nbsp;    <strong>{{ user }}</strong></h5>
@@ -25,6 +25,14 @@
     </div>
     
     <div class="ui grid container" style="padding-top: 30px;">
+        <div style="display: inline-block;">
+            {% for board in boards %}
+            <h1 id="boardTitle" style="display: inline-block; margin-right: 30px;">{{ board.title }}</h1>
+            {% endfor %}
+            <i id="editBoard" class="edit icon" data-modal="modal7" data-key="{{ boardId }}"></i>
+            <i id="delBoard" class="trash icon" data-modal="modal6" data-key="{{ boardId }}"></i>
+        </div>
+
         <button class="ui blue button" data-modal="modal1" id="new">Nueva Tarea</button>
 
         <div class="three column row">
@@ -270,6 +278,52 @@
                 Si
             </button>
         </form>
+    </div>
+    <div class="ui basic modal" id="modal6">
+        <div class="ui icon header">
+            <i class="archive icon"></i>
+            Eliminar Tablero
+        </div>
+        <div class="content" style="text-align: center">
+            <p>¿Deseas borrar este tablero?</p>
+        </div>
+        <form id="delFormBoard" class="actions" style="width: fit-content; margin: auto">
+            <input type="hidden" value="" name="delid" id="delidBoard"/>
+            <input type="hidden" value="del" id="method" name="method"/>
+            <button type="button" value="no" id="cancelDel" class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                No
+            </button>
+            <button type="submit" value="yes" class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+                Si
+            </button>
+        </form>
+    </div>
+    <div class="ui mini modal" id="modal7">
+        <i class="close icon"></i>
+        <div class="header">
+            Modificar Tablero
+        </div>
+
+            <div class="auto-center-col image content" style="flex-direction: column">
+                <form class="ui form" id="modFormBoard">
+                    <input type="hidden" name="method" value="mod"/>
+                    <input type="hidden" name="key" id="editidBoard" value=""/>
+                    <input type="hidden" name="status" value=""/>
+                    <div class="field">
+                        <label>Titulo</label>
+                        <input type="text" name="title" id="nameBoard"/>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <button id="modifyBoard" class="ui positive right labeled icon button">
+                Modificar
+                <i class="checkmark icon"></i>
+                </button>
+            </div>
+
     </div>
 
     

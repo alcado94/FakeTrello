@@ -21,6 +21,27 @@ $(document).ready(function(){
         );
     });
 
+    $('#delBoard').click(function () {
+        // using the attribute data-modal to identify for what modal the button references
+        modal = $(this).attr('data-modal');
+        // creating the individual event attached to click over button
+        $('#'+modal+'.modal').modal(
+            'show'
+        );
+
+        $('#delidBoard').attr('value',$(this).attr('data-key'));
+    })
+    $('#editBoard').click(function () {
+        // using the attribute data-modal to identify for what modal the button references
+        modal = $(this).attr('data-modal');
+        // creating the individual event attached to click over button
+        $('#'+modal+'.modal').modal(
+            'show'
+        );
+        $('#modFormBoard').find('input[name="title"]').val($('#boardTitle').text().trim());
+        $('#editidBoard').attr('value',$(this).attr('data-key'));
+    })
+
 
 });
 
@@ -143,4 +164,8 @@ $('#newTask').click(function () {
 
 $('#modifyTask').click(function () {
     $('#modFormTask').submit();
+})
+
+$('#modifyBoard').click(function () {
+    $('#modFormBoard').submit();
 })

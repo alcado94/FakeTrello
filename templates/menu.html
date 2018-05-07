@@ -23,8 +23,12 @@
 
         </div>
     </div>
-
     <div class="ui grid container" style="padding-top: 30px;">
+        <h1>Tus Tableros</h1>
+    </div>
+    <div class="ui grid container" style="padding-top: 30px;">
+
+
         <div class="ui cards" id="listBoards">
             {% for board in boards %}
                 <a href="/task?id={{ board.key }}" class="card">
@@ -35,6 +39,7 @@
                             &nbsp;
 
                             &nbsp;
+
                         </div>
                     </div>
                 </a>

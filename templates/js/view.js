@@ -32,7 +32,6 @@ var TaskView = (function() {
                     },
                     showErrorMessage
                 );
-				console.log(self.task);
 
 				return false;
 			});
@@ -73,6 +72,42 @@ var TaskView = (function() {
 
                 return false;
             });
+
+			$('#delFormBoard').submit(function(event) {
+				self.task = self.delBoard();
+
+                dao.deleteBoard(self.task,
+                    function(task) {
+                		setTimeout(
+						function()
+						{
+							window.location.replace("/");
+						}, 500);
+
+                    },
+                    showErrorMessage
+                );
+
+				return false;
+			});
+
+			$('#modFormBoard').submit(function(event) {
+				self.task = self.editBoard();
+
+                dao.modifyBoard(self.task,
+                    function(task) {
+						$('#modal7.modal').modal(
+                            'hide'
+                        );
+                        $('#boardTitle').text(self.task.title)
+                        self.resetForm();
+
+                    },
+                    showErrorMessage
+                );
+
+				return false;
+			});
 		};
 
 		this.postTask = function() {
@@ -83,6 +118,18 @@ var TaskView = (function() {
 				'method' : form.find('input[name="method"]').val(),
 				'title': form.find('input[name="title"]').val(),
 				'description': form.find('textarea[name="description"]').val(),
+				'board': $("#boardId").val()
+
+			};
+		};
+
+		this.editBoard = function() {
+			var form = $('#modFormTask');
+
+			return {
+
+				'method' : form.find('input[name="method"]').val(),
+				'title': $('#nameBoard').val(),
 				'board': $("#boardId").val()
 
 			};
@@ -106,6 +153,15 @@ var TaskView = (function() {
 			return {
 				'method' : form.find('input[name="method"]').val(),
 				'id' : $('#delid').attr('value')
+			};
+		};
+
+		this.delBoard = function() {
+			var form = $('#delFormBoard');
+
+			return {
+				'method' : form.find('input[name="method"]').val(),
+				'id' : $('#delidBoard').attr('value')
 			};
 		};
 

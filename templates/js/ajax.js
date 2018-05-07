@@ -50,6 +50,20 @@ var TaskDAO = (function() {
 				data: task
 			}, done, fail, always);
 		};
+		this.deleteBoard = function(task, done, fail, always) {
+			requestByAjax({
+				url: "/board/",
+				type: 'POST',
+				data: task
+			}, done, fail, always);
+		};
+		this.modifyBoard = function(task, done, fail, always) {
+			requestByAjax({
+				url: "/board/",
+				type: 'POST',
+				data: task
+			}, done, fail, always);
+		};
 	}
 
 	return TaskDAO;

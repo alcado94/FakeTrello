@@ -116,7 +116,7 @@ var BoardView = (function() {
 		};
 
 		this.newBoard = function (board) {
-			$( "<a class=\"card\">\n" +
+			$( "<a class=\"card\" href='/task?id=" + board.id + "'>\n" +
                 "                <div class=\"content\">\n" +
                 "                    <div class=\"header\">" + board.title + "</div>\n" +
                 "                    <div class=\"meta\"></div>\n" +

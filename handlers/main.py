@@ -86,13 +86,11 @@ class TaskHandler(webapp2.RequestHandler):
 
 
 
-        todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo', Task.owner == user_id , Task.board == id)]
-        doing = [row.to_dict() for row in Task.query(Task.status == 'Doing', Task.owner == user_id , Task.board == id)]
-        done = [row.to_dict() for row in Task.query(Task.status == 'Done' , Task.owner == user_id , Task.board == id)]
+        todo = [row.to_dict() for row in Task.query(Task.status == 'ToDo', Task.owner == user_id, Task.board == id)]
+        doing = [row.to_dict() for row in Task.query(Task.status == 'Doing', Task.owner == user_id, Task.board == id)]
+        done = [row.to_dict() for row in Task.query(Task.status == 'Done', Task.owner == user_id, Task.board == id)]
+        boards = [row.to_dict() for row in Board.query(Board.key == id)]
 
-        print(todo)
-        print(doing)
-        print(done)
 
         data = {
             "tasksToDo": todo,
@@ -100,7 +98,8 @@ class TaskHandler(webapp2.RequestHandler):
             "tasksDone": done,
             "user": user.nickname(),
             "user_logout": users.create_logout_url("/"),
-            "boardId" : id
+            "boardId" : id,
+            "boards" : boards
         }
 
         self.response.write(jinja.render_template("index.html", **data))
@@ -188,18 +187,16 @@ class BoardHandler(webapp2.RequestHandler):
             if method == 'del':
                 id = self.request.get('id')
 
-                entity = ndb.Key(Task, id)
+
+                entity = ndb.Key(Board, id)
 
                 entity.delete()
             elif method == 'mod':
-                id = self.request.get('id')
+                id = self.request.get('board')
 
-
-                entity = ndb.Key(Task, id).get()
+                entity = ndb.Key(Board, id).get()
 
                 entity.title = self.request.get('title')
-                entity.description = self.request.get('description')
-                entity.status = self.request.get('status')
 
                 entity.put()
 
